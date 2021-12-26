@@ -1,17 +1,23 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class MainClass {
+public class TestWithoutRunBrowser {
 
     static WebDriver driver;
     public static void main(String[] args)
     {
         System.setProperty("webdriver.chrome.driver", "/Users/nataliagordeeva/Documents/chromedriver");
-        driver = new ChromeDriver();
+        System.setProperty("phantomjs.binary.path", "/Users/nataliagordeeva/Documents/phantomjs");
+        driver = new PhantomJSDriver();
+       // driver = new ChromeDriver();
        // driver.get("https://hh.ru/");
         driver.get("https://www.w3schools.com/sql/sql_distinct.asp");
        /* driver.navigate().back();
@@ -56,6 +62,17 @@ public class MainClass {
         System.out.println(table.getValueFromCell(1, "Address"));
         System.out.println(table.getValueFromCell(2, "Country"));
 
+
+        Date dateNow = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("hh_mm_ss");
+        String fileName = format.format(dateNow) + ".png";
+
+        File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(screenshot, new File("./ScreenShotsSelenium/" + fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         driver.quit();
     }
 
